@@ -136,8 +136,20 @@ onValue(messagesRef, (snapshot) => {
 
     div.className = "message";
 
+    const time = new Date(msg.timestamp).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+    
     div.innerHTML = `
-      <strong>${msg.name}:</strong> ${msg.text}
+      <div class="message-top">
+        <strong>${msg.name}</strong>
+        <span class="time">${time}</span>
+      </div>
+    
+      <div class="message-text">
+        ${msg.text}
+      </div>
     `;
 
     messagesDiv.appendChild(div);
