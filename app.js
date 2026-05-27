@@ -30,37 +30,14 @@ const sendBtn = document.getElementById("sendBtn");
 const messageInput = document.getElementById("messageInput");
 const nameInput = document.getElementById("name");
 
-// Load saved name
-const savedName = localStorage.getItem("chatName");
-
-if (savedName) {
-  nameInput.value = savedName;
-}
-
-// Save name whenever changed
-nameInput.addEventListener("input", () => {
-  localStorage.setItem("chatName", nameInput.value);
-});
-
-
-const WEBSITE_PASSWORD = "meowlaadli";
-
-const loginBtn = document.getElementById("loginBtn");
-const passwordInput = document.getElementById("passwordInput");
-
-const loginScreen = document.getElementById("loginScreen");
-const chatScreen = document.getElementById("chatScreen");
-
-loginBtn.addEventListener("click", () => {
-  if (passwordInput.value === WEBSITE_PASSWORD) {
-    loginScreen.style.display = "none";
-    chatScreen.style.display = "block";
-  } else {
-    alert("Wrong password");
-  }
-});
+/*
+  Clear all messages whenever page loads.
+  So refresh resets chat.
+*/
+remove(messagesRef);
 
 sendBtn.addEventListener("click", () => {
+
   const name = nameInput.value.trim();
   const text = messageInput.value.trim();
 
@@ -75,40 +52,32 @@ sendBtn.addEventListener("click", () => {
   messageInput.value = "";
 });
 
+
+// --------------------
+// SHOW MESSAGES
+// --------------------
+
 onValue(messagesRef, (snapshot) => {
+
   messagesDiv.innerHTML = "";
 
   const now = Date.now();
   const TWO_HOURS = 2 * 60 * 60 * 1000;
 
   snapshot.forEach((child) => {
+
     const msg = child.val();
 
-    // delete old messages
-    if (now - msg.timestamp > TWO_HOURS) {
-      return;
-    }
-
     const div = document.createElement("div");
+
     div.className = "message";
 
-    div.innerHTML = `<strong>${msg.name}:</strong> ${msg.text}`;
+    div.innerHTML = `
+      <strong>${msg.name}:</strong> ${msg.text}
+    `;
 
     messagesDiv.appendChild(div);
   });
 
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
-});
-
-const clearBtn = document.getElementById("clearBtn");
-
-clearBtn.addEventListener("click", () => {
-  const password = prompt("Enter admin password");
-
-  if (password === CLEAR_PASSWORD) {
-    remove(messagesRef);
-    alert("Chat cleared");
-  } else {
-    alert("Wrong password");
-  }
 });
