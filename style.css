@@ -19,7 +19,8 @@ body {
 /* MAIN CHAT BOX */
 
 .chat-container {
-  width: 420px;
+  width: 90%;
+  max-width: 700px;
 
   background: rgba(255, 255, 255, 0.75);
 
@@ -46,7 +47,7 @@ h2 {
 /* MESSAGE AREA */
 
 #messages {
-  height: 500px;
+  height: 550px;
 
   overflow-y: auto;
 
@@ -229,5 +230,37 @@ button:hover {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .chat-container {
+    width: 95%;
+    padding: 16px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  #messages {
+    height: 450px;
+  }
+
+  .message {
+    padding: 10px;
+  }
+
+  .message-text {
+    font-size: 15px;
+  }
+
+  input {
+    font-size: 15px;
+  }
+
+  button {
+    font-size: 15px;
   }
 }
