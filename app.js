@@ -19,6 +19,7 @@ const firebaseConfig = {
   measurementId: "G-1Q53BR3XFE"
 };
 
+const CLEAR_PASSWORD = "chotilulli";
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
@@ -97,4 +98,17 @@ onValue(messagesRef, (snapshot) => {
   });
 
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});
+
+const clearBtn = document.getElementById("clearBtn");
+
+clearBtn.addEventListener("click", () => {
+  const password = prompt("Enter admin password");
+
+  if (password === CLEAR_PASSWORD) {
+    remove(messagesRef);
+    alert("Chat cleared");
+  } else {
+    alert("Wrong password");
+  }
 });
