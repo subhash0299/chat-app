@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Minimal Chat</title>
-  <link rel="stylesheet" href="style.css">
-</head>
 <body>
 
-<div class="chat-container">
+<div id="loginScreen" class="chat-container">
+  <h2>Enter Password</h2>
+
+  <input type="password" id="passwordInput" placeholder="Password">
+
+  <button id="loginBtn">Enter</button>
+</div>
+
+<div id="chatScreen" class="chat-container" style="display:none;">
 
   <h2>Minimal Chat</h2>
 
@@ -22,5 +24,5 @@
 </div>
 
 <script type="module" src="app.js"></script>
+
 </body>
-</html>
