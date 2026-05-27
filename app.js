@@ -29,11 +29,23 @@ const sendBtn = document.getElementById("sendBtn");
 const messageInput = document.getElementById("messageInput");
 const nameInput = document.getElementById("name");
 
-/*
-  Clear all messages whenever page loads.
-  So refresh resets chat.
-*/
-remove(messagesRef);
+
+const WEBSITE_PASSWORD = "meowlaadli";
+
+const loginBtn = document.getElementById("loginBtn");
+const passwordInput = document.getElementById("passwordInput");
+
+const loginScreen = document.getElementById("loginScreen");
+const chatScreen = document.getElementById("chatScreen");
+
+loginBtn.addEventListener("click", () => {
+  if (passwordInput.value === WEBSITE_PASSWORD) {
+    loginScreen.style.display = "none";
+    chatScreen.style.display = "block";
+  } else {
+    alert("Wrong password");
+  }
+});
 
 sendBtn.addEventListener("click", () => {
   const name = nameInput.value.trim();
@@ -43,7 +55,8 @@ sendBtn.addEventListener("click", () => {
 
   push(messagesRef, {
     name,
-    text
+    text,
+    timestamp: Date.now()
   });
 
   messageInput.value = "";
@@ -52,8 +65,16 @@ sendBtn.addEventListener("click", () => {
 onValue(messagesRef, (snapshot) => {
   messagesDiv.innerHTML = "";
 
+  const now = Date.now();
+  const TWO_HOURS = 2 * 60 * 60 * 1000;
+
   snapshot.forEach((child) => {
     const msg = child.val();
+
+    // delete old messages
+    if (now - msg.timestamp > TWO_HOURS) {
+      return;
+    }
 
     const div = document.createElement("div");
     div.className = "message";
