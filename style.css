@@ -84,3 +84,27 @@ button:hover {
 .clear-btn:hover {
   background: #e63939;
 }
+
+.message {
+  background: #e9eef6;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.message-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.time {
+  font-size: 12px;
+  color: gray;
+}
+
+.message-text {
+  font-size: 16px;
+  word-wrap: break-word;
+}
