@@ -29,6 +29,18 @@ const sendBtn = document.getElementById("sendBtn");
 const messageInput = document.getElementById("messageInput");
 const nameInput = document.getElementById("name");
 
+// Load saved name
+const savedName = localStorage.getItem("chatName");
+
+if (savedName) {
+  nameInput.value = savedName;
+}
+
+// Save name whenever changed
+nameInput.addEventListener("input", () => {
+  localStorage.setItem("chatName", nameInput.value);
+});
+
 
 const WEBSITE_PASSWORD = "meowlaadli";
 
