@@ -19,7 +19,6 @@ const firebaseConfig = {
   measurementId: "G-1Q53BR3XFE"
 };
 
-const CLEAR_PASSWORD = "chotilulli";
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
@@ -30,11 +29,71 @@ const sendBtn = document.getElementById("sendBtn");
 const messageInput = document.getElementById("messageInput");
 const nameInput = document.getElementById("name");
 
-/*
-  Clear all messages whenever page loads.
-  So refresh resets chat.
-*/
-remove(messagesRef);
+const loginBtn = document.getElementById("loginBtn");
+const passwordInput = document.getElementById("passwordInput");
+
+const loginScreen = document.getElementById("loginScreen");
+const chatScreen = document.getElementById("chatScreen");
+
+const clearBtn = document.getElementById("clearBtn");
+
+
+// --------------------
+// LOGIN
+// --------------------
+
+loginBtn.addEventListener("click", async () => {
+
+  try {
+
+    const response = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        password: passwordInput.value
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+
+      loginScreen.style.display = "none";
+      chatScreen.style.display = "block";
+
+    } else {
+
+      alert("Wrong password");
+    }
+
+  } catch (err) {
+
+    console.error(err);
+    alert("Login API failed");
+  }
+});
+
+
+// --------------------
+// SAVE NAME
+// --------------------
+
+const savedName = localStorage.getItem("chatName");
+
+if (savedName) {
+  nameInput.value = savedName;
+}
+
+nameInput.addEventListener("input", () => {
+  localStorage.setItem("chatName", nameInput.value);
+});
+
+
+// --------------------
+// SEND MESSAGE
+// --------------------
 
 sendBtn.addEventListener("click", () => {
 
@@ -68,6 +127,11 @@ onValue(messagesRef, (snapshot) => {
 
     const msg = child.val();
 
+    // Skip old messages
+    if (now - msg.timestamp > TWO_HOURS) {
+      return;
+    }
+
     const div = document.createElement("div");
 
     div.className = "message";
@@ -81,3 +145,49 @@ onValue(messagesRef, (snapshot) => {
 
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
+
+
+// --------------------
+// CLEAR CHAT
+// --------------------
+
+if (clearBtn) {
+
+  clearBtn.addEventListener("click", async () => {
+
+    const password = prompt("Enter admin password");
+
+    if (!password) return;
+
+    try {
+
+      const response = await fetch("/api/clear-chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+
+        remove(messagesRef);
+
+        alert("Chat cleared");
+
+      } else {
+
+        alert("Wrong password");
+      }
+
+    } catch (err) {
+
+      console.error(err);
+      alert("Clear API failed");
+    }
+  });
+}
