@@ -12,12 +12,12 @@ body {
 
   display: flex;
   justify-content: center;
+  align-items: center;
 
-  padding: 40px 20px;
+  padding: 20px;
 
   box-sizing: border-box;
 }
-
 
 /* MAIN CHAT BOX */
 
@@ -25,9 +25,7 @@ body {
   width: 100%;
   max-width: 700px;
 
-  background: rgba(255,255,255,0.85);
-
-  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.9);
 
   border-radius: 24px;
 
@@ -38,7 +36,6 @@ body {
 
   box-sizing: border-box;
 }
-
 /* TITLE */
 
 h2 {
@@ -241,32 +238,56 @@ button:hover {
 
 @media (max-width: 768px) {
 
+  body {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
   .chat-container {
-    width: 95%;
+    width: 100%;
     padding: 16px;
+    border-radius: 18px;
+    margin-top: 10px;
   }
 
   h2 {
     font-size: 32px;
+    margin-bottom: 16px;
   }
 
   #messages {
-    height: 450px;
+    height: 55vh;
   }
 
   .message {
-    padding: 10px;
+    padding: 12px;
   }
 
   .message-text {
-    font-size: 15px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .time {
+    font-size: 11px;
   }
 
   input {
-    font-size: 15px;
+    font-size: 16px;
+    padding: 14px;
   }
 
   button {
     font-size: 15px;
+    padding: 14px 16px;
+  }
+
+  .input-area {
+    gap: 8px;
+  }
+
+  .clear-btn {
+    margin-top: 10px;
   }
 }
+
