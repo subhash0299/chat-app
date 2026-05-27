@@ -138,7 +138,8 @@ onValue(messagesRef, (snapshot) => {
 
     const time = new Date(msg.timestamp).toLocaleTimeString([], {
       hour: "2-digit",
-      minute: "2-digit"
+      minute: "2-digit",
+      hour12: true
     });
     
     div.innerHTML = `
