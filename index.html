@@ -1,28 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Minimal Chat</title>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+
 <body>
 
-<div id="loginScreen" class="chat-container">
-  <h2>Enter Password</h2>
+  <div id="loginScreen" class="chat-container">
+    <h2>Enter Password</h2>
 
-  <input type="password" id="passwordInput" placeholder="Password">
+    <input type="password" id="passwordInput" placeholder="Password">
 
-  <button id="loginBtn">Enter</button>
-</div>
-
-<div id="chatScreen" class="chat-container" style="display:none;">
-
-  <h2>Minimal Chat</h2>
-
-  <input type="text" id="name" placeholder="Your name">
-
-  <div id="messages"></div>
-
-  <div class="input-area">
-    <input type="text" id="messageInput" placeholder="Type message...">
-    <button id="sendBtn">Send</button>
+    <button id="loginBtn">Enter</button>
   </div>
 
-</div>
+  <div id="chatScreen" class="chat-container" style="display:none;">
 
-<script type="module" src="app.js"></script>
+    <h2>Minimal Chat</h2>
+
+    <input type="text" id="name" placeholder="Your name">
+
+    <div id="messages"></div>
+
+    <div class="input-area">
+      <input type="text" id="messageInput" placeholder="Type message...">
+      <button id="sendBtn">Send</button>
+    </div>
+
+  </div>
+
+  <script type="module" src="./app.js"></script>
 
 </body>
+
+</html>
