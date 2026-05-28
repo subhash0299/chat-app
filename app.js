@@ -29,7 +29,6 @@ const app = initializeApp(firebaseConfig);
 
 const db = getDatabase(app);
 
-
 // --------------------
 // VARIABLES
 // --------------------
@@ -49,6 +48,9 @@ let messagesRef = null;
 
 const messagesDiv =
   document.getElementById("messages");
+
+const rememberMe = 
+  document.getElementById("rememberMe");
 
 const sendBtn =
   document.getElementById("sendBtn");
@@ -91,6 +93,16 @@ const currentRoomText =
 // LOGIN
 // --------------------
 
+const savedLogin =
+  localStorage.getItem("isLoggedIn");
+
+if (savedLogin === "true") {
+
+  loginScreen.style.display = "none";
+
+  chatScreen.style.display = "block";
+}
+
 loginBtn.addEventListener("click", async () => {
 
   try {
@@ -109,6 +121,14 @@ loginBtn.addEventListener("click", async () => {
 
     if (data.success) {
 
+      if (rememberMe.checked) {
+
+        localStorage.setItem(
+          "isLoggedIn",
+          "true"
+        );
+      }
+
       loginScreen.style.display = "none";
 
       chatScreen.style.display = "block";
@@ -125,6 +145,7 @@ loginBtn.addEventListener("click", async () => {
     alert("Login API failed");
   }
 });
+
 
 
 // --------------------
