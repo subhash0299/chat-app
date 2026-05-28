@@ -1,4 +1,3 @@
-```js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
@@ -171,13 +170,13 @@ createRoomBtn.addEventListener("click", async () => {
   if (!roomPassword) return;
 
   const expiryOption = prompt(
-`Choose expiry:
-
-1 = Instant
-2 = 2 Hours
-3 = 10 Hours
-4 = 24 Hours`
-  );
+    `Choose expiry:
+    
+    1 = Instant
+    2 = 2 Hours
+    3 = 10 Hours
+    4 = 24 Hours`
+      );
 
   let expiry = 0;
 
@@ -542,4 +541,4 @@ if (currentRoom) {
 
   loadMessages();
 }
-```
+
