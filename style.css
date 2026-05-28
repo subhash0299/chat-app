@@ -231,3 +231,20 @@ button:hover {
     transform: translateY(0);
   }
 }
+
+.remember-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 16px;
+
+  font-size: 14px;
+
+  color: #555;
+}
+
+.remember-box input {
+  width: auto;
+}
+
