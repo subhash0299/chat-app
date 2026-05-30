@@ -178,9 +178,12 @@ loginBtn.addEventListener("click", async () => {
 // --------------------
 
 function updateRoomButtons() {
+  const title =
+    document.querySelector("h2");
 
   if (currentRoom) {
 
+    title.style.display = "none";
     createRoomBtn.style.display = "none";
     joinRoomBtn.style.display = "none";
     deleteRoomBtn.style.display = "none";
@@ -195,6 +198,7 @@ function updateRoomButtons() {
 
   } else {
 
+    title.style.display = "block";
     createRoomBtn.style.display =
       "inline-block";
 
