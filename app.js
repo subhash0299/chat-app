@@ -88,6 +88,9 @@ const joinRoomBtn =
 const deleteRoomBtn =
   document.getElementById("deleteRoomBtn");
 
+const exitRoomBtn =
+  document.getElementById("exitRoomBtn");
+
 const currentRoomText =
   document.getElementById("currentRoom");
 
@@ -167,7 +170,29 @@ loginBtn.addEventListener("click", async () => {
   }
 });
 
+// --------------------
+// ROOM VISIBLITY
+// --------------------
 
+function updateRoomButtons() {
+
+  if (currentRoom) {
+
+    createRoomBtn.style.display = "none";
+    joinRoomBtn.style.display = "none";
+    deleteRoomBtn.style.display = "none";
+
+    exitRoomBtn.style.display = "inline-block";
+
+  } else {
+
+    createRoomBtn.style.display = "inline-block";
+    joinRoomBtn.style.display = "inline-block";
+    deleteRoomBtn.style.display = "inline-block";
+
+    exitRoomBtn.style.display = "none";
+  }
+}
 
 // --------------------
 // SAVE NAME
@@ -321,6 +346,7 @@ joinRoomBtn.addEventListener("click", async () => {
 
     currentRoomText.innerText =
       `Room: ${roomName}`;
+    updateRoomButtons();
 
     loadMessages();
 
@@ -333,7 +359,27 @@ joinRoomBtn.addEventListener("click", async () => {
     alert("Failed to join room");
   }
 });
+// --------------------
+// EXIT ROOM
+// --------------------
 
+exitRoomBtn.addEventListener("click", () => {
+
+  currentRoom = null;
+  currentRoomPassword = null;
+
+  localStorage.removeItem("currentRoom");
+  localStorage.removeItem("currentRoomPassword");
+
+  messagesDiv.innerHTML = "";
+
+  currentRoomText.innerText =
+    "No room joined";
+
+  updateRoomButtons();
+
+  alert("Exited room");
+});
 
 // --------------------
 // LOAD MESSAGES
@@ -646,6 +692,7 @@ deleteRoomBtn.addEventListener("click", async () => {
     if (data.success) {
 
       if (roomName === currentRoom) {
+        updateRoomButtons();
 
         currentRoom = null;
 
@@ -684,6 +731,20 @@ deleteRoomBtn.addEventListener("click", async () => {
 // --------------------
 // AUTO JOIN ROOM
 // --------------------
+
+if (currentRoom) {
+
+  currentRoomText.innerText =
+    `Room: ${currentRoom}`;
+
+  loadMessages();
+}
+
+// --------------------
+// ROOM SHOWING
+// --------------------
+
+updateRoomButtons();
 
 if (currentRoom) {
 
