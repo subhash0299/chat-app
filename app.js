@@ -40,6 +40,8 @@ let currentRoomPassword =
   localStorage.getItem("currentRoomPassword") || null;
 
 let messagesRef = null;
+let lastMessageTimestamp = 0;
+let notificationsInitialized = false;
 
 
 // --------------------
@@ -88,7 +90,11 @@ const deleteRoomBtn =
 const currentRoomText =
   document.getElementById("currentRoom");
 
-
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    lastMessageTimestamp = Date.now();
+  }
+});
 // --------------------
 // LOGIN
 // --------------------
@@ -127,6 +133,9 @@ loginBtn.addEventListener("click", async () => {
           "isLoggedIn",
           "true"
         );
+      if (Notification.permission === "default") {
+        Notification.requestPermission();
+}
       }
 
       loginScreen.style.display = "none";
@@ -145,7 +154,6 @@ loginBtn.addEventListener("click", async () => {
     alert("Login API failed");
   }
 });
-
 
 
 // --------------------
@@ -346,6 +354,24 @@ function loadMessages() {
     snapshot.forEach((child) => {
 
       const msg = child.val();
+      if (
+          notificationsInitialized &&
+          document.hidden &&
+          Notification.permission === "granted" &&
+          msg.timestamp > lastMessageTimestamp
+        ) {
+        
+          new Notification(
+            `Room: ${currentRoom}`,
+            {
+              body: `${msg.name}: ${msg.text}`
+            }
+          );
+        }
+        
+        if (msg.timestamp > lastMessageTimestamp) {
+          lastMessageTimestamp = msg.timestamp;
+        }
 
       if (
         expiry !== 0 &&
@@ -388,6 +414,7 @@ function loadMessages() {
 
     messagesDiv.scrollTop =
       messagesDiv.scrollHeight;
+    notificationsInitialized = true;
 
   });
 }
