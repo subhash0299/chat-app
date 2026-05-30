@@ -133,16 +133,20 @@ h2 {
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 6px;
-}
-
-.message-top strong {
-  font-size: 16px;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
 .time {
   font-size: 12px;
   color: gray;
+
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.message-top strong {
+  flex: 1;
 }
 
 .message-text {
