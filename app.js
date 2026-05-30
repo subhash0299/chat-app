@@ -274,6 +274,8 @@ joinRoomBtn.addEventListener("click", async () => {
       console.log("Listening to", `rooms/${currentRoom}/typing`);
     
     onValue(typingRef, (snapshot) => {
+      console.log("typing listener fired");
+      console.log(snapshot.val());
     
       const typingData =
         snapshot.val() || {};
