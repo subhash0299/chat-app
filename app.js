@@ -488,7 +488,7 @@ snapshot.forEach((child) => {
       set(
         ref(
           db,
-          `rooms/${currentRoom}/messages/${child.key}/readBy/${msg.readBy?.length || 0}`
+          `rooms/${currentRoom}/messages/${child.key}/readBy/${msg.readBy?.length}`
         ),
         myName
       );
