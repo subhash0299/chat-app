@@ -558,7 +558,7 @@ snapshot.forEach((child) => {
     }, 600);
 
   });
-
+  
   div.addEventListener("touchend", () => {
 
     clearTimeout(pressTimer);
@@ -570,6 +570,51 @@ snapshot.forEach((child) => {
     clearTimeout(pressTimer);
 
   });
+  let startX = 0;
+
+div.addEventListener("touchstart", (e) => {
+
+  startX =
+    e.touches[0].clientX;
+
+});
+
+div.addEventListener("touchmove", (e) => {
+
+  const diff =
+    e.touches[0].clientX - startX;
+
+  if (diff > 0 && diff < 80) {
+
+    div.style.transform =
+      `translateX(${diff}px)`;
+  }
+
+});
+
+div.addEventListener("touchend", (e) => {
+
+  const diff =
+    e.changedTouches[0].clientX - startX;
+
+  div.style.transform = "";
+
+  if (diff > 80) {
+
+    replyTo = {
+      name: msg.name,
+      text: msg.text
+    };
+
+    replyText.innerHTML =
+      `<strong>${msg.name}</strong>: ${msg.text}`;
+
+    replyPreview.style.display = "flex";
+
+    navigator.vibrate?.(30);
+  }
+
+});
 
 });
 
