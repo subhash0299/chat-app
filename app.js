@@ -807,7 +807,12 @@ sendBtn.addEventListener("click", () => {
     readBy: [name]
   });
   
-  messageInput.addEventListener(
+  messageInput.value = "";
+  replyTo = null;
+  replyPreview.style.display = "none";
+});
+
+messageInput.addEventListener(
     "keydown",
     (e) => {
      // console.log("KEY:", e.key);
@@ -823,11 +828,6 @@ sendBtn.addEventListener("click", () => {
   
     }
   );
-  
-  messageInput.value = "";
-  replyTo = null;
-  replyPreview.style.display = "none";
-});
 
 messageInput.addEventListener("input", () => {
 
