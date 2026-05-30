@@ -15,11 +15,10 @@ body {
   align-items: center;
 }
 
-
-/* MAIN CHAT BOX */
+/* MAIN CONTAINER */
 
 .chat-container {
-  width: min(600px, 95vw);
+  width: min(700px, 95vw);
 
   background: rgba(255,255,255,0.75);
 
@@ -29,28 +28,56 @@ body {
 
   padding: 24px;
 
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  box-sizing: border-box;
 
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.1);
 }
 
-
-/* TITLE */
+/* HOME PAGE */
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 38px;
+  font-size: 42px;
+  margin-bottom: 25px;
 }
 
+.room-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.room-controls button {
+  flex: 1;
+}
+
+/* ROOM HEADER */
+
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 15px;
+}
+
+.room-header h3 {
+  margin: 0;
+  font-size: 28px;
+}
 
 /* MESSAGE AREA */
 
+#roomArea {
+  display: flex;
+  flex-direction: column;
+}
+
 #messages {
-  flex: 1;
+  height: 60vh;
 
   overflow-y: auto;
-
-  min-height: 0;
 
   padding: 15px;
 
@@ -60,7 +87,7 @@ h2 {
 
   border: 1px solid rgba(0,0,0,0.08);
 
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 
   display: flex;
   flex-direction: column;
@@ -68,72 +95,123 @@ h2 {
   gap: 10px;
 }
 
-
-/* SINGLE MESSAGE */
+/* CHAT BUBBLES */
 
 .message {
-  background: #e9eef6;
+  max-width: 75%;
+
+  width: fit-content;
 
   padding: 14px;
 
-  border-radius: 18px;
-
-  margin-bottom: 12px;
+  border-radius: 16px;
 
   word-wrap: break-word;
+
+  box-shadow:
+    0 2px 5px rgba(0,0,0,0.08);
 
   animation: fadeIn 0.2s ease;
 }
 
+.my-message {
+  margin-left: auto;
+
+  background: #dcf8c6;
+}
+
+.other-message {
+  margin-right: auto;
+
+  background: white;
+}
 
 /* MESSAGE TOP */
 
 .message-top {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
 
   margin-bottom: 6px;
 }
 
-
-/* USERNAME */
-
 .message-top strong {
   font-size: 16px;
 }
 
-
-/* TIME */
-
 .time {
   font-size: 12px;
-
   color: gray;
 }
 
-
-/* MESSAGE TEXT */
-
 .message-text {
   font-size: 16px;
-
   line-height: 1.5;
 }
 
+/* REPLY */
+
+.reply-box {
+  background: #f3f3f3;
+
+  padding: 8px;
+
+  margin-bottom: 8px;
+
+  border-left: 4px solid #0070f3;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+
+  overflow-wrap: break-word;
+}
+
+.reply-btn {
+  margin-top: 8px;
+
+  font-size: 12px;
+
+  padding: 4px 8px;
+}
+
+#replyPreview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px;
+
+  margin-bottom: 10px;
+
+  border-left: 4px solid #0070f3;
+
+  background: #eef5ff;
+
+  border-radius: 8px;
+}
+
+/* TYPING */
+
+#typingIndicator {
+  height: 20px;
+
+  margin: 6px 0;
+
+  font-size: 14px;
+
+  font-style: italic;
+
+  color: #666;
+}
 
 /* INPUT AREA */
 
 .input-area {
   display: flex;
-
   gap: 10px;
 }
-
-
-/* INPUTS */
 
 input {
   flex: 1;
@@ -147,16 +225,14 @@ input {
   font-size: 16px;
 
   outline: none;
-
-  transition: 0.2s;
 }
 
 input:focus {
   border-color: #0070f3;
 
-  box-shadow: 0 0 0 3px rgba(0,112,243,0.1);
+  box-shadow:
+    0 0 0 3px rgba(0,112,243,0.1);
 }
-
 
 /* BUTTONS */
 
@@ -174,29 +250,11 @@ button {
   cursor: pointer;
 
   font-size: 15px;
-
-  transition: 0.2s;
 }
 
 button:hover {
-  transform: scale(1.03);
-
   background: #005ad1;
 }
-
-
-/* LOGIN SCREEN */
-
-#loginScreen {
-  text-align: center;
-}
-
-#loginScreen input {
-  margin-bottom: 15px;
-}
-
-
-/* CLEAR BUTTON */
 
 .clear-btn {
   width: 100%;
@@ -210,6 +268,26 @@ button:hover {
   background: #e63939;
 }
 
+/* LOGIN */
+
+#loginScreen {
+  text-align: center;
+}
+
+.remember-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+.remember-box input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
 
 /* SCROLLBAR */
 
@@ -219,12 +297,10 @@ button:hover {
 
 #messages::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.2);
-
   border-radius: 10px;
 }
 
-
-/* MESSAGE ANIMATION */
+/* ANIMATION */
 
 @keyframes fadeIn {
 
@@ -239,82 +315,11 @@ button:hover {
   }
 }
 
-.remember-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  gap: 10px;
-
-  margin-bottom: 18px;
-
-  font-size: 16px;
-  color: #555;
-
-  width: 100%;
-}
-
-.remember-box input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-
-  margin: 0;
-
-  cursor: pointer;
-}
-
-
-#typingIndicator {
-  height: 20px;
-  margin: 8px 0;
-
-  font-size: 14px;
-  font-style: italic;
-
-  color: #666;
-}
-
-#replyPreview {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 10px;
-  margin-bottom: 10px;
-
-  border-left: 4px solid #0070f3;
-  background: #eef5ff;
-
-  border-radius: 8px;
-}
-
-.reply-box {
-  background: #f3f3f3;
-
-  padding: 8px;
-
-  margin-bottom: 8px;
-
-  border-left: 4px solid #0070f3;
-
-  border-radius: 6px;
-
-  font-size: 14px;
-}
-
-.reply-btn {
-  margin-top: 6px;
-
-  font-size: 12px;
-
-  padding: 4px 8px;
-}
+/* MOBILE */
 
 @media (max-width: 600px) {
 
   body {
-    margin: 0;
-    padding: 0;
     overflow: hidden;
   }
 
@@ -322,22 +327,19 @@ button:hover {
     width: 100vw;
     height: 100vh;
 
-    margin: 0;
-    padding: 12px;
-
     border-radius: 0;
+
+    padding: 12px;
 
     display: flex;
     flex-direction: column;
-
-    overflow: hidden;
-    box-sizing: border-box;
   }
 
   #roomArea {
+    flex: 1;
+
     display: flex;
     flex-direction: column;
-    flex: 1;
 
     min-height: 0;
   }
@@ -347,114 +349,33 @@ button:hover {
 
     min-height: 0;
 
-    overflow-y: auto;
-
     height: auto;
   }
 
   .room-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
     flex-shrink: 0;
   }
 
-  #typingIndicator,
-  #replyPreview,
   .clear-btn,
-  .input-area {
+  .input-area,
+  #replyPreview,
+  #typingIndicator {
     flex-shrink: 0;
   }
 
   .message {
     max-width: 85%;
   }
-}
-.reply-box {
-  overflow-wrap: break-word;
-  max-width: 100%;
-}
 
-/* Message container */
+  h2 {
+    font-size: 32px;
+  }
 
-.message {
-  max-width: 75%;
-  width: fit-content;
-}
+  .room-controls {
+    flex-direction: column;
+  }
 
-/* My messages */
-
-.my-message {
-  margin-left: auto;
-
-  background: #dcf8c6;
-
-  text-align: left;
-}
-
-/* Other messages */
-
-.other-message {
-  margin-right: auto;
-
-  background: #ffffff;
-}
-
-/* Better message area */
-
-#messages {
-  display: flex;
-  flex-direction: column;
-
-  gap: 10px;
-}
-
-.message {
-  padding: 14px;
-  border-radius: 16px;
-  margin-bottom: 8px;
-  word-wrap: break-word;
-
-  box-shadow:
-    0 2px 5px rgba(0,0,0,0.08);
-}
-
-<h3 class="section-title">
-  Room Management
-</h3>
-
-<p class="subtitle">
-  Private rooms. Real-time chat.
-</p>
-
-.subtitle {
-  text-align: center;
-  color: #777;
-  margin-top: -10px;
-  margin-bottom: 25px;
-}
-
-.room-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin-bottom: 15px;
-}
-
-.room-header h3 {
-  margin: 0;
-  font-size: 26px;
-}
-
-.room-header {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  width: 100%;
-}
-
-.room-header h3 {
-  margin: 0;
+  .room-controls button {
+    width: 100%;
+  }
 }
