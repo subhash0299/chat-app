@@ -98,7 +98,6 @@ h2 {
 /* CHAT BUBBLES */
 
 .message {
-  transition: transform 0.15s ease;
   max-width: 75%;
 
   width: fit-content;
@@ -381,4 +380,10 @@ button:hover {
   .room-controls button {
     width: 100%;
   }
+}
+
+.message {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
