@@ -106,6 +106,9 @@ const replyText =
 const cancelReply =
   document.getElementById("cancelReply");
 
+const roomArea =
+  document.getElementById("roomArea");
+
 cancelReply.addEventListener("click", () => {
 
   replyTo = null;
@@ -182,18 +185,35 @@ function updateRoomButtons() {
     joinRoomBtn.style.display = "none";
     deleteRoomBtn.style.display = "none";
 
-    exitRoomBtn.style.display = "inline-block";
+    nameInput.style.display = "none";
+
+    exitRoomBtn.style.display =
+      "inline-block";
+
+    roomArea.style.display =
+      "block";
 
   } else {
 
-    createRoomBtn.style.display = "inline-block";
-    joinRoomBtn.style.display = "inline-block";
-    deleteRoomBtn.style.display = "inline-block";
+    createRoomBtn.style.display =
+      "inline-block";
 
-    exitRoomBtn.style.display = "none";
+    joinRoomBtn.style.display =
+      "inline-block";
+
+    deleteRoomBtn.style.display =
+      "inline-block";
+
+    nameInput.style.display =
+      "block";
+
+    exitRoomBtn.style.display =
+      "none";
+
+    roomArea.style.display =
+      "none";
   }
 }
-
 // --------------------
 // SAVE NAME
 // --------------------
@@ -370,7 +390,7 @@ exitRoomBtn.addEventListener("click", () => {
 
   localStorage.removeItem("currentRoom");
   localStorage.removeItem("currentRoomPassword");
-
+  updateRoomButtons();
   messagesDiv.innerHTML = "";
 
   currentRoomText.innerText =
