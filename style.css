@@ -306,9 +306,21 @@ button:hover {
 
 @media (max-width: 600px) {
 
+  body {
+    align-items: flex-start;
+    padding: 0;
+  }
+
   .chat-container {
-    width: 95vw;
-    padding: 16px;
+    width: 100vw;
+    max-width: 100vw;
+
+    min-height: 100vh;
+
+    margin: 0;
+    padding: 12px;
+
+    border-radius: 0;
   }
 
   h2 {
@@ -316,7 +328,20 @@ button:hover {
   }
 
   #messages {
-    height: 40vh;
+    height: calc(100vh - 220px);
+  }
+
+  .room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 10px;
+  }
+
+  .room-header h3 {
+    margin: 0;
+    font-size: 24px;
   }
 
   .section-title {
@@ -326,7 +351,7 @@ button:hover {
     font-size: 16px;
     font-weight: 600;
   }
-  
+
   .room-controls {
     display: flex;
     flex-direction: column;
@@ -337,8 +362,19 @@ button:hover {
   .room-controls button {
     width: 100%;
   }
-}
 
+  .input-area {
+    gap: 8px;
+  }
+
+  #messageInput {
+    min-width: 0;
+  }
+
+  .message {
+    max-width: 85%;
+  }
+}
 .reply-box {
   overflow-wrap: break-word;
   max-width: 100%;
