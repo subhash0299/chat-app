@@ -436,10 +436,40 @@ function loadMessages() {
             ${time}
           </span>
         </div>
-
-        <div class="message-text">
-          ${msg.text}
+  
+      div.innerHTML = `
+        <div class="message-top">
+          <strong>${msg.name}</strong>
+      
+          <span class="time">
+            ${time}
+          </span>
         </div>
+      
+        ${
+          msg.replyTo
+            ? `
+            <div class="reply-box">
+              <strong>
+                ${msg.replyTo.name}
+              </strong>
+      
+              <div>
+                ${msg.replyTo.text}
+              </div>
+            </div>
+        `
+        : ""
+    }
+  
+    <div class="message-text">
+      ${msg.text}
+    </div>
+  
+    <button class="reply-btn">
+      ↩ Reply
+    </button>
+`;
       `;
 
       messagesDiv.appendChild(div);
