@@ -459,15 +459,6 @@ function loadMessages() {
         ↩ Reply
       </button>
     `;
-  
-    <div class="message-text">
-      ${msg.text}
-    </div>
-  
-    <button class="reply-btn">
-      ↩ Reply
-    </button>
-`;
 
       messagesDiv.appendChild(div);
       const replyBtn =
