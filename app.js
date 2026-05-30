@@ -810,7 +810,7 @@ sendBtn.addEventListener("click", () => {
   messageInput.addEventListener(
     "keydown",
     (e) => {
-  
+      console.log("KEY:", e.key);
       if (
         e.key === "Enter" &&
         !e.shiftKey
