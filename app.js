@@ -387,294 +387,388 @@ exitRoomBtn.addEventListener("click", () => {
 // MARK READ MESSAGES
 // --------------------
 
-function markMessagesAsRead(snapshot) {
+function markMessagesAsRead(child) {
 
   const myName =
     nameInput.value.trim();
 
-  snapshot.forEach((child) => {
+  const msg =
+    child.val();
 
-    const msg =
-      child.val();
+  if (
+    msg.name === myName
+  ) return;
 
-    if (
-      msg.name === myName
-    ) return;
+  const alreadyRead =
+    msg.readBy?.includes(myName);
 
-    const alreadyRead =
-      msg.readBy?.includes(myName);
+  if (!alreadyRead) {
 
-    if (!alreadyRead) {
-
-      set(
-        ref(
-          db,
-          `rooms/${currentRoom}/messages/${child.key}/readBy/${msg.readBy?.length || 0}`
-        ),
-        myName
-      );
-    }
-
-  });
-
+    set(
+      ref(
+        db,
+        `rooms/${currentRoom}/messages/${child.key}/readBy/${msg.readBy?.length || 0}`
+      ),
+      myName
+    );
+  }
 }
 
 // --------------------
 // LOAD MESSAGES
 // --------------------
-
 function loadMessages() {
+
   console.log("loadMessages called");
 
   if (!currentRoom) return;
   if (listenersAttached) return;
+
   listenersAttached = true;
 
   messagesRef =
-    ref(db, `rooms/${currentRoom}/messages`);
+    ref(
+      db,
+      `rooms/${currentRoom}/messages`
+    );
 
   const roomRef =
-    ref(db, `rooms/${currentRoom}`);
+    ref(
+      db,
+      `rooms/${currentRoom}`
+    );
+
   const typingRef =
-    ref(db, `rooms/${currentRoom}/typing`);
-  console.log("Listening to", `rooms/${currentRoom}/typing`);
-    
-    onValue(typingRef, (snapshot) => {
-      console.log("typing listener fired");
-      console.log(snapshot.val());
-    
-      const typingData =
-        snapshot.val() || {};
-    
-      const myName =
-        nameInput.value.trim();
-    
-      let typingUser = null;
-    
-      Object.keys(typingData).forEach((user) => {
-    
-        if (
-          user !== myName &&
-          typingData[user] === true
-        ) {
-    
-          typingUser = user;
-        }
-      });
-    
-      if (typingUser) {
-    
-        typingIndicator.innerText =
-          `${typingUser} is typing...`;
-    
-      } else {
-    
-        typingIndicator.innerText = "";
+    ref(
+      db,
+      `rooms/${currentRoom}/typing`
+    );
+
+  // --------------------
+  // TYPING
+  // --------------------
+
+  onValue(typingRef, (snapshot) => {
+
+    const typingData =
+      snapshot.val() || {};
+
+    const myName =
+      nameInput.value.trim();
+
+    let typingUser = null;
+
+    Object.keys(typingData).forEach((user) => {
+
+      if (
+        user !== myName &&
+        typingData[user] === true
+      ) {
+        typingUser = user;
       }
+
     });
 
-  onValue(messagesRef, async (snapshot) => {
+    typingIndicator.innerText =
+      typingUser
+        ? `${typingUser} is typing...`
+        : "";
 
-    messagesDiv.innerHTML = "";
+  });
 
-    const roomSnapshot =
-      await get(roomRef);
+  // --------------------
+  // READ RECEIPT UPDATE
+  // --------------------
 
-    const roomData =
-      roomSnapshot.val();
+  onChildChanged(
+    messagesRef,
+    (child) => {
 
-    const expiry =
-      roomData?.expiry || 7200000;
+      const msg =
+        child.val();
 
-    const now = Date.now();
-markMessagesAsRead(snapshot);
-snapshot.forEach((child) => {
+      const bubble =
+        document.querySelector(
+          `[data-message-id="${child.key}"]`
+        );
 
-  const msg = child.val();
+      if (!bubble) return;
 
-  if (
-    expiry !== 0 &&
-    now - msg.timestamp > expiry
-  ) {
-    return;
-  }
+      const tick =
+        bubble.querySelector(
+          ".read-status"
+        );
 
-  const div =
-    document.createElement("div");
+      if (!tick) return;
 
-  div.className = "message";
+      tick.innerText =
+        msg.readBy?.length > 1
+          ? "✓✓"
+          : "✓";
 
-  const time =
-    new Date(msg.timestamp)
-      .toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true
-      })
-      .toLowerCase();
+    }
+  );
 
-  const myName =
-    nameInput.value.trim();
+  // --------------------
+  // NEW MESSAGE ONLY
+  // --------------------
 
-  if (msg.name === myName) {
-    div.classList.add("my-message");
-  } else {
-    div.classList.add("other-message");
-  }
+  onChildAdded(
+    messagesRef,
+    async (child) => {
 
-  div.innerHTML = `
-    <div class="message-top">
-      <strong>${msg.name}</strong>
+      const roomSnapshot =
+        await get(roomRef);
 
-      <span class="time">
-        ${time}
-      </span>
-    </div>
+      const roomData =
+        roomSnapshot.val();
 
-    ${
-      msg.replyTo
-        ? `
-        <div class="reply-box">
-          <strong>${msg.replyTo.name}</strong>
+      const expiry =
+        roomData?.expiry || 7200000;
 
-          <div>
-            ${msg.replyTo.text}
-          </div>
+      const now =
+        Date.now();
+
+      const msg =
+        child.val();
+
+      if (
+        expiry !== 0 &&
+        now - msg.timestamp > expiry
+      ) {
+        return;
+      }
+
+      markMessagesAsRead(child);
+
+      const div =
+        document.createElement("div");
+
+      div.dataset.messageId =
+        child.key;
+
+      div.className =
+        "message";
+
+      const time =
+        new Date(msg.timestamp)
+          .toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          })
+          .toLowerCase();
+
+      const myName =
+        nameInput.value.trim();
+
+      if (msg.name === myName) {
+
+        div.classList.add(
+          "my-message"
+        );
+
+      } else {
+
+        div.classList.add(
+          "other-message"
+        );
+      }
+
+      div.innerHTML = `
+        <div class="message-top">
+          <strong>${msg.name}</strong>
+
+          <span class="time">
+            ${time}
+          </span>
         </div>
-        `
-        : ""
+
+        ${
+          msg.replyTo
+            ? `
+            <div class="reply-box">
+              <strong>
+                ${msg.replyTo.name}
+              </strong>
+
+              <div>
+                ${msg.replyTo.text}
+              </div>
+            </div>
+            `
+            : ""
+        }
+
+        <div class="message-text">
+          ${msg.text}
+        </div>
+
+        ${
+          msg.name === myName
+            ? `
+            <div class="read-status">
+              ${
+                msg.readBy?.length > 1
+                  ? "✓✓"
+                  : "✓"
+              }
+            </div>
+            `
+            : ""
+        }
+
+        <button class="reply-btn">
+          ↩ Reply
+        </button>
+      `;
+
+      messagesDiv.appendChild(div);
+
+      const replyBtn =
+        div.querySelector(
+          ".reply-btn"
+        );
+
+      replyBtn.addEventListener(
+        "click",
+        () => {
+
+          replyTo = {
+            name: msg.name,
+            text: msg.text
+          };
+
+          replyText.innerHTML =
+            `<strong>${msg.name}</strong>: ${msg.text}`;
+
+          replyPreview.style.display =
+            "flex";
+        }
+      );
+
+      // LONG PRESS
+
+      let pressTimer;
+
+      div.addEventListener(
+        "touchstart",
+        () => {
+
+          pressTimer =
+            setTimeout(() => {
+
+              replyTo = {
+                name: msg.name,
+                text: msg.text
+              };
+
+              replyText.innerHTML =
+                `<strong>${msg.name}</strong>: ${msg.text}`;
+
+              replyPreview.style.display =
+                "flex";
+
+              navigator.vibrate?.(50);
+
+            }, 600);
+
+        }
+      );
+
+      div.addEventListener(
+        "touchend",
+        () => {
+
+          clearTimeout(
+            pressTimer
+          );
+
+        }
+      );
+
+      div.addEventListener(
+        "touchmove",
+        () => {
+
+          clearTimeout(
+            pressTimer
+          );
+
+        }
+      );
+
+      // SWIPE REPLY
+
+      let startX = 0;
+
+      div.addEventListener(
+        "touchstart",
+        (e) => {
+
+          startX =
+            e.touches[0].clientX;
+
+        }
+      );
+
+      div.addEventListener(
+        "touchmove",
+        (e) => {
+
+          const diff =
+            e.touches[0].clientX -
+            startX;
+
+          if (
+            diff > 0 &&
+            diff < 80
+          ) {
+
+            div.style.transform =
+              `translateX(${diff}px)`;
+          }
+
+        }
+      );
+
+      div.addEventListener(
+        "touchend",
+        (e) => {
+
+          const diff =
+            e.changedTouches[0].clientX -
+            startX;
+
+          div.style.transform =
+            "";
+
+          if (diff > 80) {
+
+            replyTo = {
+              name: msg.name,
+              text: msg.text
+            };
+
+            replyText.innerHTML =
+              `<strong>${msg.name}</strong>: ${msg.text}`;
+
+            replyPreview.style.display =
+              "flex";
+
+            navigator.vibrate?.(30);
+          }
+
+        }
+      );
+
+      messagesDiv.scrollTop =
+        messagesDiv.scrollHeight;
+
     }
+  );
 
-    <div class="message-text">
-      ${msg.text}
-    </div>
-    ${
-      msg.name === myName
-        ? `
-          <div class="read-status">
-            ${
-              msg.readBy?.length > 1
-                ? "✓✓"
-                : "✓"
-            }
-          </div>
-        `
-        : ""
-    }
-    <button class="reply-btn">
-      ↩ Reply
-    </button>
-  `;
-
-  messagesDiv.appendChild(div);
-
-  const replyBtn =
-    div.querySelector(".reply-btn");
-
-  replyBtn.addEventListener("click", () => {
-
-    replyTo = {
-      name: msg.name,
-      text: msg.text
-    };
-
-    replyText.innerHTML =
-      `<strong>${msg.name}</strong>: ${msg.text}`;
-
-    replyPreview.style.display = "flex";
-  });
-
-  // Mobile long press
-
-  let pressTimer;
-
-  div.addEventListener("touchstart", () => {
-
-    pressTimer = setTimeout(() => {
-
-      console.log("LONG PRESS");
-
-      replyTo = {
-        name: msg.name,
-        text: msg.text
-      };
-
-      replyText.innerHTML =
-        `<strong>${msg.name}</strong>: ${msg.text}`;
-
-      replyPreview.style.display = "flex";
-
-      navigator.vibrate?.(50);
-
-    }, 600);
-
-  });
-  
-  div.addEventListener("touchend", () => {
-
-    clearTimeout(pressTimer);
-
-  });
-
-  div.addEventListener("touchmove", () => {
-
-    clearTimeout(pressTimer);
-
-  });
-  let startX = 0;
-
-div.addEventListener("touchstart", (e) => {
-
-  startX =
-    e.touches[0].clientX;
-
-});
-
-div.addEventListener("touchmove", (e) => {
-
-  const diff =
-    e.touches[0].clientX - startX;
-
-  if (diff > 0 && diff < 80) {
-
-    div.style.transform =
-      `translateX(${diff}px)`;
-  }
-
-});
-
-div.addEventListener("touchend", (e) => {
-
-  const diff =
-    e.changedTouches[0].clientX - startX;
-
-  div.style.transform = "";
-
-  if (diff > 80) {
-
-    replyTo = {
-      name: msg.name,
-      text: msg.text
-    };
-
-    replyText.innerHTML =
-      `<strong>${msg.name}</strong>: ${msg.text}`;
-
-    replyPreview.style.display = "flex";
-
-    navigator.vibrate?.(30);
-  }
-
-});
-
-});
-
-messagesDiv.scrollTop =
-  messagesDiv.scrollHeight;
-
-  });
 }
-
 
 // --------------------
 // SEND MESSAGE
