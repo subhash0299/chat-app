@@ -42,6 +42,7 @@ let currentRoomPassword =
 
 let messagesRef = null;
 let typingTimeout = null;
+let replyTo = null;
 
 
 // --------------------
@@ -93,6 +94,21 @@ const currentRoomText =
 const typingIndicator =
   document.getElementById("typingIndicator");
 
+const replyPreview =
+  document.getElementById("replyPreview");
+
+const replyText =
+  document.getElementById("replyText");
+
+const cancelReply =
+  document.getElementById("cancelReply");
+
+cancelReply.addEventListener("click", () => {
+
+  replyTo = null;
+
+  replyPreview.style.display = "none";
+});
 
 // --------------------
 // LOGIN
@@ -427,6 +443,21 @@ function loadMessages() {
       `;
 
       messagesDiv.appendChild(div);
+      const replyBtn =
+        div.querySelector(".reply-btn");
+      
+      replyBtn.addEventListener("click", () => {
+      
+        replyTo = {
+          name: msg.name,
+          text: msg.text
+        };
+      
+        replyText.innerHTML =
+          `<strong>${msg.name}</strong>: ${msg.text}`;
+      
+        replyPreview.style.display = "flex";
+      });
     });
 
     messagesDiv.scrollTop =
@@ -468,10 +499,13 @@ sendBtn.addEventListener("click", () => {
   push(messagesRef, {
     name,
     text,
-    timestamp: Date.now()
+    timestamp: Date.now(),
+    replyTo
   });
 
   messageInput.value = "";
+  replyTo = null;
+  replyPreview.style.display = "none";
 });
 
 messageInput.addEventListener("input", () => {
