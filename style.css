@@ -319,10 +319,19 @@ button:hover {
     height: 40vh;
   }
 
+  .section-title {
+    text-align: center;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
   .room-controls {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    margin-top: 20px;
   }
 
   .room-controls button {
@@ -377,4 +386,19 @@ button:hover {
 
   box-shadow:
     0 2px 5px rgba(0,0,0,0.08);
+}
+
+<h3 class="section-title">
+  Room Management
+</h3>
+
+<p class="subtitle">
+  Private rooms. Real-time chat.
+</p>
+
+.subtitle {
+  text-align: center;
+  color: #777;
+  margin-top: -10px;
+  margin-bottom: 25px;
 }
