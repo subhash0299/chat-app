@@ -271,6 +271,7 @@ joinRoomBtn.addEventListener("click", async () => {
       ref(db, `rooms/${roomName}`);
     const typingRef =
       ref(db, `rooms/${currentRoom}/typing`);
+      console.log("Listening to", `rooms/${currentRoom}/typing`);
     
     onValue(typingRef, (snapshot) => {
     
@@ -357,6 +358,7 @@ joinRoomBtn.addEventListener("click", async () => {
 // --------------------
 
 function loadMessages() {
+  console.log("loadMessages called");
 
   if (!currentRoom) return;
 
