@@ -20,81 +20,89 @@
     <button id="loginBtn">Enter</button>
   </div>
 
-<div id="chatScreen" class="chat-container" style="display:none;">
+<div id="chatScreen" class="chat-container">
 
-  <h2>Minimal Chat</h2>
+  <div id="homeArea">
 
-  <input
-    type="text"
-    id="name"
-    placeholder="Your name"
-  >
+    <h2>Minimal Chat</h2>
 
-  <div class="room-controls">
-
-    <button id="createRoomBtn">
-      Create Room
-    </button>
-
-    <button id="joinRoomBtn">
-      Join Room
-    </button>
-
-    <button id="deleteRoomBtn">
-      Delete Room
-    </button>
-
-    <button
-      id="exitRoomBtn"
-      style="display:none;"
+    <input
+      type="text"
+      id="name"
+      placeholder="Your name"
     >
-      Exit Room
-    </button>
+
+    <div class="room-controls">
+
+      <button id="createRoomBtn">
+        Create Room
+      </button>
+
+      <button id="joinRoomBtn">
+        Join Room
+      </button>
+
+      <button id="deleteRoomBtn">
+        Delete Room
+      </button>
+
+    </div>
 
   </div>
 
-  <div id="roomArea">
-  
-    <h3 id="currentRoom">
-      No room joined
-    </h3>
-  
+  <div
+    id="roomArea"
+    style="display:none;"
+  >
+
+    <div class="room-header">
+
+      <h3 id="currentRoom">
+        Room
+      </h3>
+
+      <button id="exitRoomBtn">
+        Exit Room
+      </button>
+
+    </div>
+
     <div id="messages"></div>
-  
+
     <div id="typingIndicator"></div>
-  
+
     <div
       id="replyPreview"
       style="display:none;"
     >
       <div id="replyText"></div>
-  
+
       <button id="cancelReply">
         ✕
       </button>
     </div>
-  
+
     <button
       id="clearBtn"
       class="clear-btn"
     >
       Clear Chat
     </button>
-  
+
     <div class="input-area">
-  
+
       <input
         type="text"
         id="messageInput"
         placeholder="Type message..."
       >
-  
+
       <button id="sendBtn">
         Send
       </button>
-  
+
     </div>
-  
+
   </div>
 
 </div>
