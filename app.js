@@ -533,54 +533,58 @@ function loadMessages() {
         replyPreview.style.display = "flex";
       });
     });
-        // Swipe to reply (mobile)
-    
-    let startX = 0;
-    
-    div.addEventListener("touchstart", (e) => {
-    
-      startX =
-        e.touches[0].clientX;
-    });
-    
-    div.addEventListener("touchmove", (e) => {
-    
-      const currentX =
-        e.touches[0].clientX;
-    
-      const diff =
-        currentX - startX;
-    
-      if (diff > 0 && diff < 120) {
-    
-        div.style.transform =
-          `translateX(${diff}px)`;
-      }
-    });
-    
-    div.addEventListener("touchend", (e) => {
-    
-      const endX =
-        e.changedTouches[0].clientX;
-    
-      const diff =
-        endX - startX;
-    
-      div.style.transform = "";
-    
-      if (diff > 80) {
-    
-        replyTo = {
-          name: msg.name,
-          text: msg.text
-        };
-    
-        replyText.innerHTML =
-          `<strong>${msg.name}</strong>: ${msg.text}`;
-    
-        replyPreview.style.display = "flex";
-      }
-    });
+    const replyBtn =
+  div.querySelector(".reply-btn");
+
+replyBtn.addEventListener("click", () => {
+
+  replyTo = {
+    name: msg.name,
+    text: msg.text
+  };
+
+  replyText.innerHTML =
+    `<strong>${msg.name}</strong>: ${msg.text}`;
+
+  replyPreview.style.display = "flex";
+});
+
+
+  // Long press reply (mobile)
+  
+  let pressTimer;
+  
+  div.addEventListener("touchstart", () => {
+  
+    pressTimer = setTimeout(() => {
+  
+      replyTo = {
+        name: msg.name,
+        text: msg.text
+      };
+  
+      replyText.innerHTML =
+        `<strong>${msg.name}</strong>: ${msg.text}`;
+  
+      replyPreview.style.display = "flex";
+  
+      navigator.vibrate?.(50);
+  
+    }, 500);
+  
+  });
+  
+  div.addEventListener("touchend", () => {
+  
+    clearTimeout(pressTimer);
+  
+  });
+  
+  div.addEventListener("touchmove", () => {
+  
+    clearTimeout(pressTimer);
+  
+  });
 
     messagesDiv.scrollTop =
       messagesDiv.scrollHeight;
