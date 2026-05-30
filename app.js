@@ -775,22 +775,6 @@ function loadMessages() {
 // --------------------
 
 sendBtn.addEventListener("click", () => {
-messageInput.addEventListener(
-  "keydown",
-  (e) => {
-
-    if (
-      e.key === "Enter" &&
-      !e.shiftKey
-    ) {
-
-      e.preventDefault();
-
-      sendBtn.click();
-    }
-
-  }
-);
   
   if (!currentRoom) {
 
@@ -822,7 +806,24 @@ messageInput.addEventListener(
     replyTo,
     readBy: [name]
   });
-
+  
+  messageInput.addEventListener(
+    "keydown",
+    (e) => {
+  
+      if (
+        e.key === "Enter" &&
+        !e.shiftKey
+      ) {
+  
+        e.preventDefault();
+  
+        sendBtn.click();
+      }
+  
+    }
+  );
+  
   messageInput.value = "";
   replyTo = null;
   replyPreview.style.display = "none";
