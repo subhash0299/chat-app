@@ -321,12 +321,14 @@ button:hover {
 
   body {
      overflow-y: auto;
+     margin: 0;
+     padding: 0;
   }
 
   .chat-container {
-    width: 100vw;
+    width: 100%;
   
-    min-height: 100vh;
+    min-height: auto;
   
     border-radius: 0;
   
@@ -345,7 +347,7 @@ button:hover {
   }
 
   #messages {
-    height: 45vh;
+    height: 55vh;
     overflow-y: auto;
   }
 
