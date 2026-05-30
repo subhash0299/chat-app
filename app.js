@@ -453,28 +453,6 @@ snapshot.forEach((child) => {
 
   const msg = child.val();
 
-  const myName =
-  nameInput.value.trim();
-
-  if (
-    msg.name !== myName
-  ) {
-  
-    const alreadyRead =
-      msg.readBy?.includes(myName);
-  
-    if (!alreadyRead) {
-  
-      set(
-        ref(
-          db,
-          `rooms/${currentRoom}/messages/${child.key}/readBy/${msg.readBy?.length || 0}`
-        ),
-        myName
-      );
-    }
-  }
-
   if (
     expiry !== 0 &&
     now - msg.timestamp > expiry
@@ -498,6 +476,24 @@ snapshot.forEach((child) => {
 
   const myName =
     nameInput.value.trim();
+  if (
+    msg.name !== myName
+  ) {
+  
+    const alreadyRead =
+      msg.readBy?.includes(myName);
+  
+    if (!alreadyRead) {
+  
+      set(
+        ref(
+          db,
+          `rooms/${currentRoom}/messages/${child.key}/readBy/${msg.readBy?.length || 0}`
+        ),
+        myName
+      );
+    }
+  }
 
   if (msg.name === myName) {
     div.classList.add("my-message");
