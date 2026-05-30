@@ -470,7 +470,6 @@ function loadMessages() {
       ↩ Reply
     </button>
 `;
-      `;
 
       messagesDiv.appendChild(div);
       const replyBtn =
