@@ -108,7 +108,12 @@ if (savedLogin === "true") {
 
   chatScreen.style.display = "block";
 }
+if (
+  Notification.permission === "default"
+) {
 
+  Notification.requestPermission();
+}
 loginBtn.addEventListener("click", async () => {
 
   try {
