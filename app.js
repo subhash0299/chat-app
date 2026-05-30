@@ -106,6 +106,9 @@ const replyText =
 const cancelReply =
   document.getElementById("cancelReply");
 
+const homeArea =
+  document.getElementById("homeArea");
+
 const roomArea =
   document.getElementById("roomArea");
 
@@ -178,44 +181,16 @@ loginBtn.addEventListener("click", async () => {
 // --------------------
 
 function updateRoomButtons() {
-  const title =
-    document.querySelector("h2");
 
   if (currentRoom) {
 
-    title.style.display = "none";
-    createRoomBtn.style.display = "none";
-    joinRoomBtn.style.display = "none";
-    deleteRoomBtn.style.display = "none";
-
-    nameInput.style.display = "none";
-
-    exitRoomBtn.style.display =
-      "inline-block";
-
-    roomArea.style.display =
-      "block";
+    homeArea.style.display = "none";
+    roomArea.style.display = "block";
 
   } else {
 
-    title.style.display = "block";
-    createRoomBtn.style.display =
-      "inline-block";
-
-    joinRoomBtn.style.display =
-      "inline-block";
-
-    deleteRoomBtn.style.display =
-      "inline-block";
-
-    nameInput.style.display =
-      "block";
-
-    exitRoomBtn.style.display =
-      "none";
-
-    roomArea.style.display =
-      "none";
+    homeArea.style.display = "block";
+    roomArea.style.display = "none";
   }
 }
 // --------------------
