@@ -398,4 +398,5 @@ button:hover {
   color: #666;
 
   margin-top: 4px;
+  transition: all 0.2s ease;
 }
