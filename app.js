@@ -43,7 +43,7 @@ let currentRoomPassword =
 let messagesRef = null;
 let typingTimeout = null;
 let replyTo = null;
-
+let listenersAttached = false;
 
 // --------------------
 // ELEMENTS
@@ -347,7 +347,7 @@ joinRoomBtn.addEventListener("click", async () => {
     currentRoomText.innerText =
       `Room: ${roomName}`;
     updateRoomButtons();
-
+    listenersAttached = false;
     loadMessages();
 
     alert("Joined room");
@@ -364,7 +364,7 @@ joinRoomBtn.addEventListener("click", async () => {
 // --------------------
 
 exitRoomBtn.addEventListener("click", () => {
-
+  listenersAttached = false;
   currentRoom = null;
   currentRoomPassword = null;
 
@@ -389,6 +389,8 @@ function loadMessages() {
   console.log("loadMessages called");
 
   if (!currentRoom) return;
+  if (listenersAttached) return;
+  listenersAttached = true;
 
   messagesRef =
     ref(db, `rooms/${currentRoom}/messages`);
@@ -726,19 +728,6 @@ deleteRoomBtn.addEventListener("click", async () => {
     alert("Delete room failed");
   }
 });
-
-
-// --------------------
-// AUTO JOIN ROOM
-// --------------------
-
-if (currentRoom) {
-
-  currentRoomText.innerText =
-    `Room: ${currentRoom}`;
-
-  loadMessages();
-}
 
 // --------------------
 // ROOM SHOWING
