@@ -271,41 +271,7 @@ joinRoomBtn.addEventListener("click", async () => {
       ref(db, `rooms/${roomName}`);
     const typingRef =
       ref(db, `rooms/${currentRoom}/typing`);
-      console.log("Listening to", `rooms/${currentRoom}/typing`);
     
-    onValue(typingRef, (snapshot) => {
-      console.log("typing listener fired");
-      console.log(snapshot.val());
-    
-      const typingData =
-        snapshot.val() || {};
-    
-      const myName =
-        nameInput.value.trim();
-    
-      let typingUser = null;
-    
-      Object.keys(typingData).forEach((user) => {
-    
-        if (
-          user !== myName &&
-          typingData[user] === true
-        ) {
-    
-          typingUser = user;
-        }
-      });
-    
-      if (typingUser) {
-    
-        typingIndicator.innerText =
-          `${typingUser} is typing...`;
-    
-      } else {
-    
-        typingIndicator.innerText = "";
-      }
-    });
     const snapshot =
       await get(roomRef);
 
@@ -369,6 +335,41 @@ function loadMessages() {
 
   const roomRef =
     ref(db, `rooms/${currentRoom}`);
+        console.log("Listening to", `rooms/${currentRoom}/typing`);
+    
+    onValue(typingRef, (snapshot) => {
+      console.log("typing listener fired");
+      console.log(snapshot.val());
+    
+      const typingData =
+        snapshot.val() || {};
+    
+      const myName =
+        nameInput.value.trim();
+    
+      let typingUser = null;
+    
+      Object.keys(typingData).forEach((user) => {
+    
+        if (
+          user !== myName &&
+          typingData[user] === true
+        ) {
+    
+          typingUser = user;
+        }
+      });
+    
+      if (typingUser) {
+    
+        typingIndicator.innerText =
+          `${typingUser} is typing...`;
+    
+      } else {
+    
+        typingIndicator.innerText = "";
+      }
+    });
 
   onValue(messagesRef, async (snapshot) => {
 
