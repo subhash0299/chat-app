@@ -46,7 +46,7 @@ h2 {
 /* MESSAGE AREA */
 
 #messages {
-  height: 350px;
+  height: 65vh;
   min-height: 250px;
 
   overflow-y: auto;
@@ -401,4 +401,17 @@ button:hover {
   color: #777;
   margin-top: -10px;
   margin-bottom: 25px;
+}
+
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 15px;
+}
+
+.room-header h3 {
+  margin: 0;
+  font-size: 26px;
 }
