@@ -19,11 +19,7 @@ body {
 /* MAIN CHAT BOX */
 
 .chat-container {
-  width: min(420px, 95vw);
-
-  max-height: 95vh;
-
-  overflow: hidden;
+  width: min(600px, 95vw);
 
   background: rgba(255,255,255,0.75);
 
@@ -35,8 +31,6 @@ body {
 
   box-shadow: 0 8px 32px rgba(0,0,0,0.1);
 
-  display: flex;
-  flex-direction: column;
 }
 
 
@@ -52,7 +46,7 @@ h2 {
 /* MESSAGE AREA */
 
 #messages {
-  height: 45vh;
+  height: 350px;
   min-height: 250px;
 
   overflow-y: auto;
