@@ -98,6 +98,7 @@ h2 {
 /* CHAT BUBBLES */
 
 .message {
+  transition: transform 0.15s ease;
   max-width: 75%;
 
   width: fit-content;
@@ -345,7 +346,10 @@ button:hover {
 
     min-height: 0;
   }
-
+  .reply-btn {
+    display: none;
+  }
+  
   #messages {
     height: 55vh;
     overflow-y: auto;
