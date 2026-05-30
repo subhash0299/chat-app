@@ -775,7 +775,23 @@ function loadMessages() {
 // --------------------
 
 sendBtn.addEventListener("click", () => {
+messageInput.addEventListener(
+  "keydown",
+  (e) => {
 
+    if (
+      e.key === "Enter" &&
+      !e.shiftKey
+    ) {
+
+      e.preventDefault();
+
+      sendBtn.click();
+    }
+
+  }
+);
+  
   if (!currentRoom) {
 
     alert("Join a room first");
