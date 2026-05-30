@@ -6,7 +6,8 @@ import {
   push,
   onValue,
   remove,
-  get
+  get,
+  set
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
@@ -40,6 +41,7 @@ let currentRoomPassword =
   localStorage.getItem("currentRoomPassword") || null;
 
 let messagesRef = null;
+let typingTimeout = null;
 
 
 // --------------------
@@ -87,6 +89,9 @@ const deleteRoomBtn =
 
 const currentRoomText =
   document.getElementById("currentRoom");
+
+const typingIndicator =
+  document.getElementById("typingIndicator");
 
 
 // --------------------
@@ -264,7 +269,40 @@ joinRoomBtn.addEventListener("click", async () => {
 
     const roomRef =
       ref(db, `rooms/${roomName}`);
-
+    const typingRef =
+      ref(db, `rooms/${currentRoom}/typing`);
+    
+    onValue(typingRef, (snapshot) => {
+    
+      const typingData =
+        snapshot.val() || {};
+    
+      const myName =
+        nameInput.value.trim();
+    
+      let typingUser = null;
+    
+      Object.keys(typingData).forEach((user) => {
+    
+        if (
+          user !== myName &&
+          typingData[user] === true
+        ) {
+    
+          typingUser = user;
+        }
+      });
+    
+      if (typingUser) {
+    
+        typingIndicator.innerText =
+          `${typingUser} is typing...`;
+    
+      } else {
+    
+        typingIndicator.innerText = "";
+      }
+    });
     const snapshot =
       await get(roomRef);
 
@@ -414,6 +452,14 @@ sendBtn.addEventListener("click", () => {
 
   if (!name || !text) return;
 
+  const typingRef =
+    ref(
+      db,
+      `rooms/${currentRoom}/typing/${name}`
+    );
+  
+  set(typingRef, false);
+  
   push(messagesRef, {
     name,
     text,
@@ -423,6 +469,32 @@ sendBtn.addEventListener("click", () => {
   messageInput.value = "";
 });
 
+messageInput.addEventListener("input", () => {
+
+  if (!currentRoom) return;
+
+  const myName =
+    nameInput.value.trim();
+
+  if (!myName) return;
+
+  const typingRef =
+    ref(
+      db,
+      `rooms/${currentRoom}/typing/${myName}`
+    );
+
+  set(typingRef, true);
+
+  clearTimeout(typingTimeout);
+
+  typingTimeout = setTimeout(() => {
+
+    set(typingRef, false);
+
+  }, 2000);
+
+});
 
 // --------------------
 // CLEAR CHAT
