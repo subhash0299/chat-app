@@ -421,3 +421,20 @@ button:hover {
 
   font-size: 16px;
 }
+
+.message-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 8px;
+}
+
+.read-status {
+  font-size: 14px;
+  color: gray;
+}
+
+.reply-btn {
+  margin-top: 0;
+}
