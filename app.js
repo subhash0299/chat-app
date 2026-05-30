@@ -449,145 +449,132 @@ function loadMessages() {
 
     const now = Date.now();
 
-    snapshot.forEach((child) => {
+snapshot.forEach((child) => {
 
-      const msg = child.val();
+  const msg = child.val();
 
-      if (
-        expiry !== 0 &&
-        now - msg.timestamp > expiry
-      ) {
-       // remove(child.ref);
-        return;
-      }
+  if (
+    expiry !== 0 &&
+    now - msg.timestamp > expiry
+  ) {
+    return;
+  }
 
-      const div =
-        document.createElement("div");
+  const div =
+    document.createElement("div");
 
-      div.className = "message";
+  div.className = "message";
 
-      const time =
-        new Date(msg.timestamp)
-          .toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true
-          })
-          .toLowerCase();
-      
-    const myName =
-      nameInput.value.trim();
-    
-    if (msg.name === myName) {
-      div.classList.add("my-message");
-    } else {
-      div.classList.add("other-message");
-    }
-      
-    div.innerHTML = `
-      <div class="message-top">
-        <strong>${msg.name}</strong>
-    
-        <span class="time">
-          ${time}
-        </span>
-      </div>
-    
-      ${
-        msg.replyTo
-          ? `
-          <div class="reply-box">
-            <strong>${msg.replyTo.name}</strong>
-    
-            <div>
-              ${msg.replyTo.text}
-            </div>
+  const time =
+    new Date(msg.timestamp)
+      .toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+      })
+      .toLowerCase();
+
+  const myName =
+    nameInput.value.trim();
+
+  if (msg.name === myName) {
+    div.classList.add("my-message");
+  } else {
+    div.classList.add("other-message");
+  }
+
+  div.innerHTML = `
+    <div class="message-top">
+      <strong>${msg.name}</strong>
+
+      <span class="time">
+        ${time}
+      </span>
+    </div>
+
+    ${
+      msg.replyTo
+        ? `
+        <div class="reply-box">
+          <strong>${msg.replyTo.name}</strong>
+
+          <div>
+            ${msg.replyTo.text}
           </div>
-          `
-          : ""
-      }
-    
-      <div class="message-text">
-        ${msg.text}
-      </div>
-    
-      <button class="reply-btn">
-        ↩ Reply
-      </button>
-    `;
+        </div>
+        `
+        : ""
+    }
 
-      messagesDiv.appendChild(div);
-      const replyBtn =
-        div.querySelector(".reply-btn");
-      
-      replyBtn.addEventListener("click", () => {
-      
-        replyTo = {
-          name: msg.name,
-          text: msg.text
-        };
-      
-        replyText.innerHTML =
-          `<strong>${msg.name}</strong>: ${msg.text}`;
-      
-        replyPreview.style.display = "flex";
-      });
-    });
-    const replyBtn =
-  div.querySelector(".reply-btn");
+    <div class="message-text">
+      ${msg.text}
+    </div>
 
-replyBtn.addEventListener("click", () => {
+    <button class="reply-btn">
+      ↩ Reply
+    </button>
+  `;
 
-  replyTo = {
-    name: msg.name,
-    text: msg.text
-  };
+  messagesDiv.appendChild(div);
 
-  replyText.innerHTML =
-    `<strong>${msg.name}</strong>: ${msg.text}`;
+  const replyBtn =
+    div.querySelector(".reply-btn");
 
-  replyPreview.style.display = "flex";
-});
+  replyBtn.addEventListener("click", () => {
 
+    replyTo = {
+      name: msg.name,
+      text: msg.text
+    };
 
-  // Long press reply (mobile)
-  
+    replyText.innerHTML =
+      `<strong>${msg.name}</strong>: ${msg.text}`;
+
+    replyPreview.style.display = "flex";
+  });
+
+  // Mobile long press
+
   let pressTimer;
-  
+
   div.addEventListener("touchstart", () => {
-  
+
     pressTimer = setTimeout(() => {
-  
+
+      console.log("LONG PRESS");
+
       replyTo = {
         name: msg.name,
         text: msg.text
       };
-  
+
       replyText.innerHTML =
         `<strong>${msg.name}</strong>: ${msg.text}`;
-  
+
       replyPreview.style.display = "flex";
-  
+
       navigator.vibrate?.(50);
-  
-    }, 500);
-  
-  });
-  
-  div.addEventListener("touchend", () => {
-  
-    clearTimeout(pressTimer);
-  
-  });
-  
-  div.addEventListener("touchmove", () => {
-  
-    clearTimeout(pressTimer);
-  
+
+    }, 600);
+
   });
 
-    messagesDiv.scrollTop =
-      messagesDiv.scrollHeight;
+  div.addEventListener("touchend", () => {
+
+    clearTimeout(pressTimer);
+
+  });
+
+  div.addEventListener("touchmove", () => {
+
+    clearTimeout(pressTimer);
+
+  });
+
+});
+
+messagesDiv.scrollTop =
+  messagesDiv.scrollHeight;
 
   });
 }
