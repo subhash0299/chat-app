@@ -475,7 +475,16 @@ function loadMessages() {
             hour12: true
           })
           .toLowerCase();
-
+      
+    const myName =
+      nameInput.value.trim();
+    
+    if (msg.name === myName) {
+      div.classList.add("my-message");
+    } else {
+      div.classList.add("other-message");
+    }
+      
     div.innerHTML = `
       <div class="message-top">
         <strong>${msg.name}</strong>
