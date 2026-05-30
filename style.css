@@ -320,19 +320,19 @@ button:hover {
 @media (max-width: 600px) {
 
   body {
-    overflow: hidden;
+     overflow-y: auto;
   }
 
   .chat-container {
     width: 100vw;
-    height: 100vh;
-
+  
+    min-height: 100vh;
+  
     border-radius: 0;
-
+  
     padding: 12px;
-
-    display: flex;
-    flex-direction: column;
+  
+    box-sizing: border-box;
   }
 
   #roomArea {
@@ -345,11 +345,8 @@ button:hover {
   }
 
   #messages {
-    flex: 1;
-
-    min-height: 0;
-
-    height: auto;
+    height: 45vh;
+    overflow-y: auto;
   }
 
   .room-header {
