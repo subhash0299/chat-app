@@ -266,3 +266,39 @@ button:hover {
 
   color: #666;
 }
+
+#replyPreview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  border-left: 4px solid #0070f3;
+  background: #eef5ff;
+
+  border-radius: 8px;
+}
+
+.reply-box {
+  background: #f3f3f3;
+
+  padding: 8px;
+
+  margin-bottom: 8px;
+
+  border-left: 4px solid #0070f3;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+}
+
+.reply-btn {
+  margin-top: 6px;
+
+  font-size: 12px;
+
+  padding: 4px 8px;
+}
