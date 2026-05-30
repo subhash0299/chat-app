@@ -351,6 +351,7 @@ function loadMessages() {
         expiry !== 0 &&
         now - msg.timestamp > expiry
       ) {
+        remove(child.ref);
         return;
       }
 
