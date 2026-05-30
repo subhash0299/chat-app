@@ -46,10 +46,11 @@ h2 {
 /* MESSAGE AREA */
 
 #messages {
-  height: 65vh;
-  min-height: 250px;
+  flex: 1;
 
   overflow-y: auto;
+
+  min-height: 0;
 
   padding: 15px;
 
@@ -60,6 +61,11 @@ h2 {
   border: 1px solid rgba(0,0,0,0.08);
 
   margin-bottom: 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
 }
 
 
@@ -307,11 +313,11 @@ button:hover {
 @media (max-width: 600px) {
 
   body {
-    align-items: flex-start;
+    margin: 0;
     padding: 0;
+    overflow: hidden;
   }
 
-  .chat-container {
   .chat-container {
     width: 100vw;
     height: 100vh;
@@ -325,14 +331,25 @@ button:hover {
     flex-direction: column;
 
     overflow: hidden;
+    box-sizing: border-box;
   }
 
-  h2 {
-    font-size: 28px;
+  #roomArea {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    min-height: 0;
   }
 
   #messages {
-    height: calc(100vh - 220px);
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    height: auto;
   }
 
   .room-header {
@@ -340,39 +357,14 @@ button:hover {
     justify-content: space-between;
     align-items: center;
 
-    margin-bottom: 10px;
+    flex-shrink: 0;
   }
 
-  .room-header h3 {
-    margin: 0;
-    font-size: 24px;
-  }
-
-  .section-title {
-    text-align: center;
-    color: #666;
-    margin-bottom: 15px;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .room-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 20px;
-  }
-
-  .room-controls button {
-    width: 100%;
-  }
-
+  #typingIndicator,
+  #replyPreview,
+  .clear-btn,
   .input-area {
-    gap: 8px;
-  }
-
-  #messageInput {
-    min-width: 0;
+    flex-shrink: 0;
   }
 
   .message {
@@ -454,4 +446,15 @@ button:hover {
 .room-header h3 {
   margin: 0;
   font-size: 26px;
+}
+
+.room-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100%;
+}
+
+.room-header h3 {
+  margin: 0;
 }
