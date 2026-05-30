@@ -533,6 +533,54 @@ function loadMessages() {
         replyPreview.style.display = "flex";
       });
     });
+        // Swipe to reply (mobile)
+    
+    let startX = 0;
+    
+    div.addEventListener("touchstart", (e) => {
+    
+      startX =
+        e.touches[0].clientX;
+    });
+    
+    div.addEventListener("touchmove", (e) => {
+    
+      const currentX =
+        e.touches[0].clientX;
+    
+      const diff =
+        currentX - startX;
+    
+      if (diff > 0 && diff < 120) {
+    
+        div.style.transform =
+          `translateX(${diff}px)`;
+      }
+    });
+    
+    div.addEventListener("touchend", (e) => {
+    
+      const endX =
+        e.changedTouches[0].clientX;
+    
+      const diff =
+        endX - startX;
+    
+      div.style.transform = "";
+    
+      if (diff > 80) {
+    
+        replyTo = {
+          name: msg.name,
+          text: msg.text
+        };
+    
+        replyText.innerHTML =
+          `<strong>${msg.name}</strong>: ${msg.text}`;
+    
+        replyPreview.style.display = "flex";
+      }
+    });
 
     messagesDiv.scrollTop =
       messagesDiv.scrollHeight;
