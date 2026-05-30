@@ -459,23 +459,6 @@ function loadMessages() {
         ↩ Reply
       </button>
     `;
-
-      
-        ${
-          msg.replyTo
-            ? `
-            <div class="reply-box">
-              <strong>
-                ${msg.replyTo.name}
-              </strong>
-      
-              <div>
-                ${msg.replyTo.text}
-              </div>
-            </div>
-        `
-        : ""
-    }
   
     <div class="message-text">
       ${msg.text}
