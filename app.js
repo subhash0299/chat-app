@@ -5,6 +5,8 @@ import {
   ref,
   push,
   onValue,
+  onChildAdded,
+  onChildChanged,
   remove,
   get,
   set
@@ -380,6 +382,43 @@ exitRoomBtn.addEventListener("click", () => {
   alert("Exited room");
 });
 
+
+// --------------------
+// MARK READ MESSAGES
+// --------------------
+
+function markMessagesAsRead(snapshot) {
+
+  const myName =
+    nameInput.value.trim();
+
+  snapshot.forEach((child) => {
+
+    const msg =
+      child.val();
+
+    if (
+      msg.name === myName
+    ) return;
+
+    const alreadyRead =
+      msg.readBy?.includes(myName);
+
+    if (!alreadyRead) {
+
+      set(
+        ref(
+          db,
+          `rooms/${currentRoom}/messages/${child.key}/readBy/${msg.readBy?.length || 0}`
+        ),
+        myName
+      );
+    }
+
+  });
+
+}
+
 // --------------------
 // LOAD MESSAGES
 // --------------------
@@ -448,7 +487,7 @@ function loadMessages() {
       roomData?.expiry || 7200000;
 
     const now = Date.now();
-
+markMessagesAsRead(snapshot);
 snapshot.forEach((child) => {
 
   const msg = child.val();
@@ -476,24 +515,6 @@ snapshot.forEach((child) => {
 
   const myName =
     nameInput.value.trim();
-  if (
-    msg.name !== myName
-  ) {
-  
-    const alreadyRead =
-      msg.readBy?.includes(myName);
-  
-    if (!alreadyRead) {
-  
-      set(
-        ref(
-          db,
-          `rooms/${currentRoom}/messages/${child.key}/readBy/${msg.readBy?.length}`
-        ),
-        myName
-      );
-    }
-  }
 
   if (msg.name === myName) {
     div.classList.add("my-message");
