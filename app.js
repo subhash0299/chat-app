@@ -604,23 +604,27 @@ function loadMessages() {
           ${msg.text}
         </div>
 
-        ${
-          msg.name === myName
-            ? `
-            <div class="read-status">
-              ${
-                msg.readBy?.length > 1
-                  ? "✓✓"
-                  : "✓"
-              }
-            </div>
-            `
-            : ""
-        }
-
-        <button class="reply-btn">
-          ↩ Reply
-        </button>
+        <div class="message-actions">
+        
+          ${
+            msg.name === myName
+              ? `
+                <div class="read-status">
+                  ${
+                    msg.readBy?.length > 1
+                      ? "✓✓"
+                      : "✓"
+                  }
+                </div>
+              `
+              : ""
+          }
+        
+          <button class="reply-btn">
+            ↩ Reply
+          </button>
+        
+        </div>
       `;
 
       messagesDiv.appendChild(div);
