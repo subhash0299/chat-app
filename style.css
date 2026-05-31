@@ -438,3 +438,29 @@ button:hover {
 .reply-btn {
   margin-top: 0;
 }
+
+.message-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+
+  margin-top: 8px;
+}
+
+.edit-btn,
+.delete-btn,
+.reply-btn {
+
+  padding: 4px 8px;
+
+  font-size: 12px;
+}
+
+.edited-label {
+
+  color: gray;
+
+  font-size: 12px;
+
+  margin-left: 6px;
+}
