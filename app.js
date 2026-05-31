@@ -7,6 +7,7 @@ import {
   onValue,
   onChildAdded,
   onChildChanged,
+  onChildRemoved,
   remove,
   get,
   set
@@ -480,35 +481,81 @@ function loadMessages() {
   // READ RECEIPT UPDATE
   // --------------------
 
-  onChildChanged(
-    messagesRef,
-    (child) => {
+onChildChanged(
+  messagesRef,
+  (child) => {
 
-      const msg =
-        child.val();
+    const msg =
+      child.val();
 
-      const bubble =
-        document.querySelector(
-          `[data-message-id="${child.key}"]`
-        );
+    const bubble =
+      document.querySelector(
+        `[data-message-id="${child.key}"]`
+      );
 
-      if (!bubble) return;
+    if (!bubble) return;
 
-      const tick =
-        bubble.querySelector(
-          ".read-status"
-        );
+    // Update read receipt
 
-      if (!tick) return;
+    const tick =
+      bubble.querySelector(
+        ".read-status"
+      );
+
+    if (tick) {
 
       tick.innerText =
         msg.readBy?.length > 1
           ? "✓✓"
           : "✓";
-
     }
-  );
 
+    // Update message text after edit
+
+    const textDiv =
+      bubble.querySelector(
+        ".message-text"
+      );
+
+    if (textDiv) {
+
+      textDiv.innerHTML = `
+        ${msg.text}
+
+        ${
+          msg.edited
+            ? `
+            <span class="edited-label">
+              (edited)
+            </span>
+            `
+            : ""
+        }
+      `;
+    }
+
+  }
+);
+// --------------------
+// REMOVE MESSAGE
+// ----
+  
+onChildRemoved(
+  messagesRef,
+  (child) => {
+
+    const bubble =
+      document.querySelector(
+        `[data-message-id="${child.key}"]`
+      );
+
+    if (bubble) {
+
+      bubble.remove();
+    }
+
+  }
+);
   // --------------------
   // NEW MESSAGE ONLY
   // --------------------
@@ -602,8 +649,18 @@ function loadMessages() {
 
         <div class="message-text">
           ${msg.text}
+        
+          ${
+            msg.edited
+              ? `
+              <span class="edited-label">
+                (edited)
+              </span>
+              `
+              : ""
+          }
         </div>
-
+        
         <div class="message-actions">
         
           ${
@@ -620,9 +677,27 @@ function loadMessages() {
               : ""
           }
         
+        <div class="message-actions">
+        
           <button class="reply-btn">
             ↩ Reply
           </button>
+        
+          ${
+            msg.name === myName
+              ? `
+              <button class="edit-btn">
+                ✏ Edit
+              </button>
+        
+              <button class="delete-btn">
+                🗑 Delete
+              </button>
+              `
+              : ""
+          }
+        
+        </div>
         
         </div>
       `;
@@ -634,6 +709,73 @@ function loadMessages() {
           ".reply-btn"
         );
 
+      const editBtn =
+        div.querySelector(".edit-btn");
+      
+      if (editBtn) {
+      
+        editBtn.addEventListener(
+          "click",
+          async () => {
+      
+            const newText =
+              prompt(
+                "Edit message",
+                msg.text
+              );
+      
+            if (
+              !newText ||
+              newText.trim() === ""
+            ) return;
+      
+            await set(
+              ref(
+                db,
+                `rooms/${currentRoom}/messages/${child.key}/text`
+              ),
+              newText
+            );
+      
+            await set(
+              ref(
+                db,
+                `rooms/${currentRoom}/messages/${child.key}/edited`
+              ),
+              true
+            );
+      
+          }
+        );
+      }
+      
+      const deleteBtn =
+        div.querySelector(".delete-btn");
+      
+      if (deleteBtn) {
+      
+        deleteBtn.addEventListener(
+          "click",
+          async () => {
+      
+            const confirmed =
+              confirm(
+                "Delete this message?"
+              );
+      
+            if (!confirmed) return;
+      
+            await remove(
+              ref(
+                db,
+                `rooms/${currentRoom}/messages/${child.key}`
+              )
+            );
+      
+          }
+        );
+      }
+      
       replyBtn.addEventListener(
         "click",
         () => {
